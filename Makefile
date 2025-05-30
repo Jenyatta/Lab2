@@ -1,30 +1,14 @@
-CC = g++
+CXX := g++
+CXXFLAGS := -Wall -I.
+LDFLAGS := -L. -lfractions
 
-CFLAGS = -Wall -Wextra -std=c++11 -I.
+all: fractions.dll main.exe
 
-SRCS = main.cpp fraction.cpp
+main.exe: main.cpp fractions.dll
+ $(CXX) $(CXXFLAGS) main.cpp -o main.exe $(LDFLAGS)
 
-OBJS = $(SRCS:.cpp=.o)
-
-TARGET = fraction_app
-
-all: $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-%.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+fractions.dll: fractions.cpp fractions.h
+ $(CXX) -shared fractions.cpp -o fractions.dll
 
 clean:
-	rm -f $(OBJS) $(TARGET)
-
-test: all
-	./$(TARGET) --help
-
-depend:
-	$(CC) -MM $(SRCS) > Makefile.dep
-
--include Makefile.dep
-
-.PHONY: all clean test
+ del main.exe fractions.dll
