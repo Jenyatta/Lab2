@@ -1,0 +1,22 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Compile library
+      run: |
+        g++ -shared -o fraction.dll fraction.cpp -fPIC
+
+    - name: Compile program
+      run: |
+        g++ main.cpp -o main.exe -L. -lfraction
+
+    - name: Run program
+      run: |
+        ./main.exe
