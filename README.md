@@ -1,5 +1,5 @@
 # Калькулятор дробей
-![Build Status](https://github.com/Jenyatta/fraction/actions/workflows/build.yml/badge.svg)
+![Build Status](https://github.com/Jenyatta/Lab2/actions/workflows/build.yml/badge.svg)
 
 Программный комплекс для работы с дробями на C++.
 
