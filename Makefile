@@ -11,4 +11,4 @@ fractions.dll: fractions.cpp fractions.h
  $(CXX) -shared fractions.cpp -o fractions.dll
 
 clean:
- del main.exe fractions.dll
+del /Q main.exe fractions.dll
