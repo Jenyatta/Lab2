@@ -1,14 +1,50 @@
-CXX := g++
-CXXFLAGS := -Wall -I.
-LDFLAGS := -L. -lfractions
+# Используем компилятор GNU C++ (g++)
+CC = g++
 
-all: fractions.dll main.exe
+CFLAGS = -Wall -Wextra -Werror -std=c++17
+# Флаги компиляции:
+# -Wall       - включить все основные предупреждения
+# -Wextra     - дополнительные предупреждения
+# -Werror     - трактовать предупреждения как ошибки (строгий режим)
+# -std=c++17  - использовать стандарт C++17
 
-main.exe: main.cpp fractions.dll
- $(CXX) $(CXXFLAGS) main.cpp -o main.exe $(LDFLAGS)
+TARGET = fractionapp.exe
+# Имя конечного исполняемого файла
 
-fractions.dll: fractions.cpp fractions.h
- $(CXX) -shared fractions.cpp -o fractions.dll
+OBJ = main.o
+# Список объектных файлов для приложения
 
+LIB_DIR = .
+# Директория с библиотеками (текущая)
+
+LIB_NAME = libfraction.a
+# Имя подключаемой статической библиотеки
+
+compile: $(TARGET)
+# Основная цель по умолчанию - сборка приложения
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -L$(LIB_DIR) $^ -l:$(LIB_NAME) -o $@
+# Правило линковки исполняемого файла:
+# $@ - имя цели (fractionapp.exe)
+# $^ - все зависимости (main.o)
+# -L$(LIB_DIR) - путь к директории с библиотеками
+# -l:$(LIB_NAME) - явное указание имени библиотеки (с префиксом lib и суффиксом .a)
+# -o $@ - указать имя выходного файла
+
+main.o: main.cpp fraction.h
+	$(CC) $(CFLAGS) -c $< -o $@
+# Правило компиляции объектного файла:
+# $< - имя первого файла зависимости (main.cpp)
+# -c - компилировать без линковки
+# -o $@ - указать имя выходного файла (main.o)
+
+# Очистка сгенерированных файлов (для Windows)
 clean:
-del /Q main.exe fractions.dll
+	# Удаляем объектные файлы, если они существуют
+	cmd /C "if exist $(OBJ) del $(OBJ)"
+	# Удаляем исполняемый файл, если он существует
+	cmd /C "if exist $(TARGET) del $(TARGET)"
+
+# Объявление ложных целей, которые не соответствуют файлам
+.PHONY: compile clean
