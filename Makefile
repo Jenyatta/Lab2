@@ -6,7 +6,7 @@ LIBRARY = libfraction.dylib
 all: $(TARGET)
 
 $(TARGET): main.cpp $(LIBRARY)
-	$(CXX) $(CXXFLAGS) main.cpp -L. -lmylib -o $(TARGET)
+	$(CXX) $(CXXFLAGS) main.cpp -L. -lfraction -o $(TARGET)
 
 $(LIBRARY): fraction.cpp fraction.h
 	$(CXX) $(CXXFLAGS) -dynamiclib fraction.cpp -o $(LIBRARY)
